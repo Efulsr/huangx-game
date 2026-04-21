@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>皇 HUANGX - Premium Mining</title>
+    <style>
+        /* TEMA PREMIUM BLACK & GOLD */
+        body { 
+            background: radial-gradient(circle, #1a1a1a 0%, #000000 100%); 
+            color: #ffd700; 
+            text-align: center; 
+            font-family: 'Arial', sans-serif; 
+            margin: 0;
+            user-select: none;
+        }
+
+        .container { padding: 20px; max-width: 500px; margin: auto; }
+
+        /* STATS BOARD */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .stat-card {
+            background: rgba(255, 215, 0, 0.05);
+            border: 1px solid #ffd700;
+            padding: 15px;
+            border-radius: 15px;
+        }
+        .label { font-size: 12px; color: #888; text-transform: uppercase; }
+        .value { display: block; font-size: 22px; font-weight: bold; color: #fff; }
+
+        /* LOGO UTAMA */
+        #coin-container { position: relative; margin: 30px auto; width: 220px; }
+        #coin-image { 
+            width: 100%; 
+            filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.4));
+            cursor: pointer; 
+            transition: transform 0.05s ease;
+        }
+        #coin-image:active { transform: scale(0.92); }
+
+        /* ENERGY SYSTEM */
+        .energy-bar {
+            width: 100%;
+            height: 12px;
+            background: #222;
+            border-radius: 10px;
+            border: 1px solid #ffd700;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        #energy-fill {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, #ffd700, #b8860b);
+            transition: width 0.3s ease;
+        }
+
+        /* BUTTONS SHOP */
+        .shop-container { margin-top: 30px; }
+        .btn {
+            background: linear-gradient(45deg, #ffd700, #b8860b);
+            color: #000;
+            border: none;
+            padding: 15px;
+            width: 100%;
+            font-weight: bold;
+            border-radius: 12px;
+            cursor: pointer;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        .btn-solana { background: #000; color: #ffd700; border: 1px solid #ffd700; }
+
+        /* LEADERBOARD */
+        .ranking {
+            background: #111;
+            padding: 15px;
+            border-radius: 15px;
+            border: 1px solid #333;
+            margin-top: 30px;
+            text-align: left;
+        }
+        .rank-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #222; }
+        .gold { color: #ffd700; font-weight: bold; }
+
+        .address-box { font-size: 10px; color: #444; margin-top: 20px; word-break: break-all; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2 style="letter-spacing: 4px;">皇 HUANGX</h2>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <span class="label">Balance</span>
+            <span class="value" id="balance">0</span>
+        </div>
+        <div class="stat-card">
+            <span class="label">Profit / Tap</span>
+            <span class="value" id="tapPower">1</span>
+        </div>
+    </div>
+
+    <div id="coin-container">
+        <img src="https://i.ibb.co/68vX1Zg/6285077192341395920.jpg" id="coin-image" alt="Huangx Orca">
+    </div>
+
+    <div class="energy-bar">
+        <div id="energy-fill"></div>
+    </div>
+    <p style="font-size: 14px;">⚡ Energy: <span id="energy-text">1000</span>/1000</p>
+
+    <div class="shop-container">
+        <button class="btn" onclick="buyStars()">🚀 Boost 2x Power (1000 Stars)</button>
+        <button class="btn btn-solana" onclick="buySolana()">💎 Buy Auto-Bot (0.1 SOL)</button>
+    </div>
+
+    <div class="ranking">
+        <h4 style="text-align:center; margin-top:0;">🏆 GLOBAL RANKING</h4>
+        <div class="rank-row"><span>1. Eful Saeful</span><span class="gold">2.5M</span></div>
+        <div class="rank-row"><span>2. Huangx_Whale</span><span class="gold">1.8M</span></div>
+        <div class="rank-row"><span>3. Solana_Hunter</span><span class="gold">900K</span></div>
+        <div class="rank-row" style="opacity:0.5;"><span>... Your Rank</span><span id="userRank">#99+</span></div>
+    </div>
+
+    <div class="address-box">
+        Official Solana Address:<br>
+        H4ZzmkFJS3eoZo9FjGrSiKWUz7cidwLpXi56BzKsUUug
+    </div>
+</div>
+
+<script>
+    // INITIAL DATA
+    let balance = parseInt(localStorage.getItem('huangx_balance')) || 0;
+    let tapPower = parseInt(localStorage.getItem('huangx_power')) || 1;
+    let energy = 1000;
+    const maxEnergy = 1000;
+
+    // UPDATE TAMPILAN AWAL
+    updateDisplay();
+
+    // LOGIKA KLIK (TAP)
+    document.getElementById('coin-image').onclick = function() {
+        if (energy > 0) {
+            balance += tapPower;
+            energy -= 1;
+            updateDisplay();
+            saveData();
+        } else {
+            alert("Energy habis! Istirahat dulu bro.");
+        }
+    };
+
+    // RECHARGE ENERGY (DAPET 3 ENERGY TIAP 2 DETIK)
+    setInterval(() => {
+        if (energy < maxEnergy) {
+            energy += 3;
+            if (energy > maxEnergy) energy = maxEnergy;
+            updateDisplay();
+        }
+    }, 2000);
+
+    function updateDisplay() {
+        document.getElementById('balance').innerText = balance.toLocaleString();
+        document.getElementById('tapPower').innerText = tapPower;
+        document.getElementById('energy-text').innerText = energy;
+        
+        // Update Bar Energy
+        let percentage = (energy / maxEnergy) * 100;
+        document.getElementById('energy-fill').style.width = percentage + "%";
+    }
+
+    function saveData() {
+        localStorage.setItem('huangx_balance', balance);
+        localStorage.setItem('huangx_power', tapPower);
+    }
+
+    // FUNGSI PEMBAYARAN (SIMULASI)
+    function buyStars() {
+        alert("Konfirmasi pembayaran 1000 Stars ke Huangx Admin...");
+        // Di sini nanti lu bisa pasang link invoice Telegram Stars
+    }
+
+    function buySolana() {
+        const ca = "H4ZzmkFJS3eoZo9FjGrSiKWUz7cidwLpXi56BzKsUUug";
+        prompt("Kirim 0.1 SOL ke address ini untuk aktivasi Auto-Bot:", ca);
+    }
+</script>
+
+</body>
+</html>
