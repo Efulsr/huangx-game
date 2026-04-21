@@ -1,0 +1,150 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #000000;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    color: #FFF5B7;
+    min-height: 100vh;
+    padding: 16px;
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding: 12px;
+    background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+    border-radius: 20px;
+    border: 1px solid #C5A028;
+}
+
+.logo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid #C5A028;
+    box-shadow: 0 0 10px rgba(197, 160, 40, 0.5);
+}
+
+.balance-container {
+    text-align: right;
+}
+
+.balance-label {
+    font-size: 12px;
+    color: #C5A028;
+    display: block;
+}
+
+.balance-value {
+    font-size: 28px;
+    font-weight: bold;
+    background: linear-gradient(135deg, #FFF5B7, #C5A028);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+/* Slot Machine */
+.slot-machine {
+    background: linear-gradient(145deg, #0a0a0a, #000000);
+    border-radius: 32px;
+    padding: 24px;
+    margin-bottom: 24px;
+    border: 1px solid #C5A028;
+    box-shadow: 0 0 20px rgba(197, 160, 40, 0.2);
+}
+
+.reels {
+    display: flex;
+    justify-content: space-around;
+    gap: 16px;
+    margin-bottom: 32px;
+}
+
+.reel {
+    width: 80px;
+    height: 80px;
+    background: #111;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    border: 2px solid #C5A028;
+    box-shadow: inset 0 0 10px rgba(197, 160, 40, 0.3);
+}
+
+.spin-btn {
+    width: 100%;
+    padding: 18px;
+    font-size: 20px;
+    font-weight: bold;
+    background: linear-gradient(135deg, #C5A028, #8B6914);
+    border: none;
+    border-radius: 48px;
+    color: #000;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.spin-btn:active {
+    transform: scale(0.98);
+}
+
+.spin-btn:disabled {
+    opacity: 0.5;
+    transform: none;
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.action-btn {
+    flex: 1;
+    padding: 14px;
+    background: #111;
+    border: 1px solid #C5A028;
+    border-radius: 40px;
+    color: #FFF5B7;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.action-btn:active {
+    background: #C5A028;
+    color: #000;
+}
+
+/* Info Panel */
+.info-panel {
+    text-align: center;
+    padding: 16px;
+    background: rgba(197, 160, 40, 0.1);
+    border-radius: 16px;
+    font-size: 12px;
+    color: #C5A028;
+}
+
+/* Animasi Spin */
+@keyframes spinReel {
+    0% { transform: translateY(0); opacity: 1; }
+    50% { transform: translateY(-20px); opacity: 0.5; }
+    100% { transform: translateY(0); opacity: 1; }
+}
+
+.spinning {
+    animation: spinReel 0.2s ease-in-out infinite;
+}
