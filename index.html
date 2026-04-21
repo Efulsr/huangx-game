@@ -1,50 +1,194 @@
-index.html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Huangx Airdrop Game</title>
+    <title>皇 HUANGX - Premium Mining</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body { background: #000; color: #ffd700; text-align: center; font-family: Arial; }
-        #coin { width: 200px; cursor: pointer; transition: transform 0.1s; }
-        #coin:active { transform: scale(0.9); }
-        .stats { font-size: 24px; margin-top: 20px; }
-        .btn-task { background: #ffd700; color: #000; padding: 10px; border: none; border-radius: 5px; cursor: pointer; }
+        /* TEMA LUXURY BLACK & GOLD */
+        body {
+            background: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);
+            color: #ffd700;
+            text-align: center;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .container { padding: 20px; max-width: 450px; margin: auto; }
+
+        /* PREMIUM STATS BOARD */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(145deg, rgba(255, 215, 0, 0.1), rgba(0, 0, 0, 0.5));
+            border: 1px solid rgba(255, 215, 0, 0.4);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .label { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 5px; }
+        .value { font-size: 24px; font-weight: 800; color: #fff; text-shadow: 0 0 10px rgba(255, 215, 0, 0.2); }
+
+        /* LUXURY LOGO ORCA */
+        #coin-container { position: relative; margin: 40px auto; width: 240px; perspective: 1000px; }
+        #coin-image {
+            width: 100%;
+            cursor: pointer;
+            transition: transform 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.4));
+        }
+        #coin-image:active { transform: scale(0.92) rotateX(10deg); }
+
+        /* BUTTON DEPOSIT LUXURY */
+        .btn-payment {
+            background: linear-gradient(45deg, #d4af37, #f9e29c, #b8860b);
+            background-size: 200% auto;
+            color: #000;
+            border: none;
+            padding: 18px;
+            width: 100%;
+            border-radius: 15px;
+            font-weight: 900;
+            font-size: 16px;
+            letter-spacing: 1px;
+            cursor: pointer;
+            margin-top: 25px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+            transition: 0.3s;
+        }
+        .btn-payment:hover { background-position: right center; transform: translateY(-2px); }
+
+        /* MODAL PEMBAYARAN */
+        #payment-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #111;
+            border: 1px solid #ffd700;
+            padding: 30px;
+            border-radius: 25px;
+            z-index: 1000;
+            width: 85%;
+            max-width: 340px;
+            box-shadow: 0 0 40px rgba(0,0,0,0.9);
+        }
+
+        .pay-option {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid #222;
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            text-align: left;
+            transition: 0.2s;
+        }
+        .pay-option:hover { border-color: #ffd700; background: rgba(255, 215, 0, 0.05); }
+
+        .address-box {
+            background: #000;
+            padding: 12px;
+            word-break: break-all;
+            border-radius: 10px;
+            font-size: 11px;
+            font-family: 'Courier New', monospace;
+            color: #14f195;
+            border: 1px solid #14f195;
+            margin-top: 8px;
+        }
+
+        .overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:999; backdrop-filter: blur(5px); }
     </style>
 </head>
-<body>
-    <h1>HUANGX COIN HUNTER</h1>
-    <div class="stats">Coins: <span id="balance">0</span></div>
-    
-    <img src="https://cdn-icons-png.flaticon.com/512/217/217853.png" id="coin" alt="Click Me">
+<body><div class="container">
+    <h1 style="font-size: 28px; margin-bottom: 5px; font-weight: 900; letter-spacing: 2px;">皇 HUANGX</h1>
+    <p style="font-size: 13px; color: #d4af37; margin-bottom: 30px; letter-spacing: 1px;">PREMIUM MINING PROTOCOL</p>
 
-    <div style="margin-top: 30px;">
-        <h3>Daily Missions</h3>
-        <button class="btn-task" onclick="doTask()">Join Telegram (+1000 Coins)</button>
+    <div class="stats-grid">
+        <div class="stat-card">
+            <span class="label">Total Mined</span>
+            <span class="value" id="balance">0</span>
+        </div>
+        <div class="stat-card">
+            <span class="label">Network</span>
+            <span class="value" style="color: #14f195; font-size: 14px;">SOLANA MAINNET</span>
+        </div>
     </div>
 
-    <script>
-        let balance = localStorage.getItem('coins') || 0;
-        document.getElementById('balance').innerText = balance;
+    <div id="coin-container" onclick="mine()">
+        <img src="1000789780.png" id="coin-image" alt="HUANGX Logo">
+    </div>
 
-        // Fungsi Tap
-        document.getElementById('coin').onclick = () => {
-            balance++;
-            updateUI();
-        };
+    <button class="btn-payment" onclick="openPayment()">💳 DEPOSIT / TOP UP</button>
+</div>
 
-        // Fungsi Task
-        function doTask() {
-            balance = parseInt(balance) + 1000;
-            updateUI();
-            alert("Task Completed! +1000 Huangx Coins");
+<div class="overlay" id="overlay" onclick="closePayment()"></div>
+<div id="payment-modal">
+    <h2 style="margin-top:0; color:#ffd700; font-size: 20px;">Payment Options</h2>
+    
+    <div class="pay-option" onclick="payWithStars()">
+        <span style="color: #0088cc; font-weight: bold; font-size: 15px;">🌟 Telegram Stars</span>
+        <p style="margin: 5px 0 0; font-size: 11px; color: #888;">Instant purchase via Telegram</p>
+    </div>
+
+    <div class="pay-option">
+        <span style="color: #14f195; font-weight: bold; font-size: 15px;">🧪 Solana ($SOL)</span>
+        <p style="margin: 5px 0; font-size: 10px; color: #888;">Official Deposit Address:</p>
+        <div class="address-box">H4ZzmkFJS3eoZo9FjGrSiKWUz7cidwLpXi56BzKsUUug</div>
+    </div>
+
+    <button onclick="closePayment()" style="background:none; border:none; color:#555; cursor:pointer; margin-top:15px; font-weight: bold; width:100%;">CLOSE</button>
+</div>
+
+<script>
+    let count = parseInt(localStorage.getItem('huangx_balance')) || 0;
+    const balanceEl = document.getElementById('balance');
+    balanceEl.innerText = count.toLocaleString();
+
+    const tele = window.Telegram.WebApp;
+    tele.expand();
+    tele.setHeaderColor('#000000');
+
+    function mine() {
+        count++;
+        balanceEl.innerText = count.toLocaleString();
+        localStorage.setItem('huangx_balance', count);
+        
+        if (tele.HapticFeedback) {
+            tele.HapticFeedback.impactOccurred('heavy');
         }
+    }
 
-        function updateUI() {
-            document.getElementById('balance').innerText = balance;
-            localStorage.setItem('coins', balance); // Simpan di browser user
-        }
-    </script>
+    function openPayment() {
+        document.getElementById('payment-modal').style.display = 'block';
+        document.getElementById('overlay').style.display = 'block';
+    }
+
+    function closePayment() {
+        document.getElementById('payment-modal').style.display = 'none';
+        document.getElementById('overlay').style.display = 'none';
+    }
+
+    function payWithStars() {
+        tele.showConfirm("Proceed with Telegram Stars payment?");
+    }
+</script>
+
 </body>
 </html>
